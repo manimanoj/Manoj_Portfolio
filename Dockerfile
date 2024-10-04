@@ -1,15 +1,18 @@
 FROM ubuntu:14.04
 
+# Install Nginx
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get clean
+
+# Set the working directory
 WORKDIR /app
 
-ADD . /app
+# Copy the HTML files to the Nginx default directory
+COPY . /usr/share/nginx/html
 
-USER root
+# Expose port 80
+EXPOSE 5000
 
-RUN apt-get update
-
-RUN apt-get install --no-install-recommends xdg-utils
-
-RUN apt-get install -y --no-install-recommends links2
-
-RUN xdg-open index.html
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
